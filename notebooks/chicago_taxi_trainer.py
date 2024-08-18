@@ -39,9 +39,6 @@ def preprocessing_fn(inputs):
         if key in ["work_day", "work_hour"]:
             # Convert work_day and work_hour to float32
             outputs[key] = tf.cast(inputs[key], tf.float32)
-        # elif key in ["pickup_community_area", "dropoff_community_area"]:
-        #     # Keep these as int64, but normalize them
-        #     outputs[key] = tft.scale_to_z_score(tf.cast(inputs[key], tf.float32))
         else:
             # For other features, apply z-score normalization
             outputs[key] = tft.scale_to_z_score(inputs[key])
@@ -50,16 +47,6 @@ def preprocessing_fn(inputs):
 
     return outputs
 
-
-# NEW: This function will apply the same transform operation to training data
-#      and serving requests.
-# def _apply_preprocessing(raw_features, tft_layer):
-#     transformed_features = tft_layer(raw_features)
-#     if _LABEL_KEY in raw_features:
-#         transformed_label = transformed_features.pop(_LABEL_KEY)
-#         return transformed_features, transformed_label
-#     else:
-#         return transformed_features, None
 
 
 # NEW: This function will create a handler function which gets a serialized
